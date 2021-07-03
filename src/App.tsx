@@ -21,7 +21,7 @@ import '@ionic/react/css/display.css'
 
 /* Theme variables */
 import './theme/variables.css'
-import React, { useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { UserHeader } from './components/UserHeader'
 import { FreeDays } from './components/FreeDays'
 import { FreeHours } from './components/FreeHours'
@@ -29,6 +29,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { changeFullySelectedTime } from './redux/signReducer'
 import { getFullySelectedTime } from './redux/signSelector'
 import { getMonthName, nextCons, parseTime } from './common/functions'
+import { change, get } from './firebase/firebase'
 
 
 const App: React.FC = () => {
@@ -36,6 +37,15 @@ const App: React.FC = () => {
   const [selectedTime, setSelectedTime] = useState(() => nextCons(curTime)[0])
   const fullySelectedTime = useSelector(getFullySelectedTime)
   const dispatch = useDispatch()
+  const setTime = useCallback((newDate) =>
+    dispatch(changeFullySelectedTime(newDate)), [dispatch])
+
+  useEffect(() => {
+    get().then(newDate => {
+      setSelectedTime(new Date(newDate))
+      setTime(newDate)
+    })
+  }, [setTime])
 
   return <IonApp>
     <IonContent>
@@ -62,9 +72,13 @@ const App: React.FC = () => {
               </IonRow>
               <IonRow>
                 <IonButton size='small' color='secondary'
-                           onClick={() => dispatch(
-                             changeFullySelectedTime(selectedTime.toString()),
-                           )}
+                           onClick={() => {
+                             change(selectedTime.toString()).then(() => {
+                               dispatch(
+                                 changeFullySelectedTime(selectedTime.toString()),
+                               )
+                             })
+                           }}
                 >
                   ЗАПИСАТЬСЯ НА БЕСПЛАТНУЮ ВСТРЕЧУ
                 </IonButton>
