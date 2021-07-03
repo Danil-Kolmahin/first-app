@@ -13,8 +13,8 @@ export const UserHeader: React.FC = () => {
       </IonCol>
     </IonRow>
     <IonRow class='ion-justify-content-evenly ion-align-items-center'>
-      <IonCol size='3'>
-        <IonImg src={img} style={{ maxWidth: 100, borderRadius: '20px' }} />
+      <IonCol size='3.7'>
+        <IonImg className='IonImg' src={img} style={{ maxWidth: 100 }} />
       </IonCol>
       <IonCol size='3'>
         <IonRow>
