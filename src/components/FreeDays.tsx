@@ -12,12 +12,14 @@ interface FreeDaysProps {
   setSelectedTime: Dispatch<SetStateAction<Date>>
 }
 
-export const FreeDays: React.FC<FreeDaysProps> = ({ selectedTime, curTime, setSelectedTime }) => {
+export const FreeDays: React.FC<FreeDaysProps> = (
+  { selectedTime, curTime, setSelectedTime },
+) => {
   return <>
     <IonRow class='ion-justify-content-between'>
       <IonRow>Возможная дата</IonRow>
       <IonRow>
-        <IonImg src={firstMode} style={{ marginRight: '10px' }}/>
+        <IonImg src={firstMode} style={{ marginRight: '10px' }} />
         <IonImg src={secondMode} />
       </IonRow>
     </IonRow>
@@ -38,7 +40,9 @@ export const FreeDays: React.FC<FreeDaysProps> = ({ selectedTime, curTime, setSe
                 {obj.dayOfWeek}
               </IonCol></IonRow>
               <IonRow className='ion-text-center'><IonCol>
-                <span style={{ fontSize: '25px', fontWeight: 700 }}>{obj.number}</span>
+                <span style={{ fontSize: '25px', fontWeight: 700 }}>
+                  {obj.number}
+                </span>
               </IonCol></IonRow>
             </IonCard>
           </IonCol>,

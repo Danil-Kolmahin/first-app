@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { nextCons } from '../common/functions'
+import { nextConsultation } from '../common/functions'
 
 const slice = createSlice({
   name: 'signReducer',
   initialState: {
-    fullySelectedTime: nextCons(new Date())[0],
+    fullySelectedTime: nextConsultation(new Date())[0],
   },
   reducers: {
     changeFullySelectedTime: (state, action) => {

@@ -9,7 +9,9 @@ export const UserHeader: React.FC = () => {
   return <>
     <IonRow>
       <IonCol>
-        <div className='ion-text-center' style={{ fontSize: '20px' }}>Алексей Карачинский</div>
+        <div className='ion-text-center' style={{ fontSize: '20px' }}>
+          Алексей Карачинский
+        </div>
       </IonCol>
     </IonRow>
     <IonRow class='ion-justify-content-evenly ion-align-items-center'>

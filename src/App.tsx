@@ -1,6 +1,5 @@
 import {
-  IonApp, IonGrid, IonRow, IonCol, IonContent,
-  IonCard, IonCardContent, IonButton,
+  IonApp, IonGrid, IonContent,
 } from '@ionic/react'
 
 /* Core CSS required for Ionic components to work properly */
@@ -28,14 +27,17 @@ import { FreeHours } from './components/FreeHours'
 import { useDispatch, useSelector } from 'react-redux'
 import { changeFullySelectedTime } from './redux/signReducer'
 import { getFullySelectedTime } from './redux/signSelector'
-import { getMonthName, nextCons, parseTime } from './common/functions'
-import { change, get } from './firebase/firebase'
+import { nextConsultation } from './common/functions'
+import { get } from './firebase/firebase'
 import './App.css'
+import { BottomButton } from './components/BottomButton'
 
 
 const App: React.FC = () => {
-  const [curTime] = useState(new Date()) // new Date(0, 0, 0, 15, 50)
-  const [selectedTime, setSelectedTime] = useState(() => nextCons(curTime)[0])
+  const [curTime] = useState(new Date())
+  const [selectedTime, setSelectedTime] = useState(
+    () => nextConsultation(curTime)[0],
+  )
   const fullySelectedTime = useSelector(getFullySelectedTime)
   const dispatch = useDispatch()
   const setTime = useCallback((newDate) =>
@@ -54,43 +56,7 @@ const App: React.FC = () => {
         <UserHeader />
         <FreeDays {...{ selectedTime, curTime, setSelectedTime }} />
         <FreeHours {...{ selectedTime, curTime, setSelectedTime }} />
-        <IonRow className='ion-text-center'>
-          <IonCol>
-            <IonCard>
-              <IonCardContent>
-                <IonRow className='ion-text-center'>
-                  <IonCol style={{ borderRight: '2px solid #E5E5E5' }}>
-                    <div>Дата</div>
-                    <div style={{ fontWeight: 700, color: 'black' }}>
-                      {fullySelectedTime.getDate() + ' ' + getMonthName(fullySelectedTime)}
-                    </div>
-                  </IonCol>
-                  <IonCol>
-                    <div>Время</div>
-                    <div style={{ fontWeight: 700, color: 'black' }}>
-                      {parseTime(fullySelectedTime)}
-                    </div>
-                  </IonCol>
-                </IonRow>
-                <IonRow className='ion-text-center'>
-                  <IonCol>
-                    <IonButton size='small' color='secondary'
-                               onClick={() => {
-                                 change(selectedTime.toString()).then(() => {
-                                   dispatch(
-                                     changeFullySelectedTime(selectedTime.toString()),
-                                   )
-                                 })
-                               }}
-                    >
-                      <div style={{ fontSize: '10px' }}>ЗАПИСАТЬСЯ НА БЕСПЛАТНУЮ ВСТРЕЧУ</div>
-                    </IonButton>
-                  </IonCol>
-                </IonRow>
-              </IonCardContent>
-            </IonCard>
-          </IonCol>
-        </IonRow>
+        <BottomButton {...{ selectedTime, fullySelectedTime, dispatch }} />
       </IonGrid>
     </IonContent>
   </IonApp>
