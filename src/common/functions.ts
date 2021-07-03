@@ -7,6 +7,7 @@ type day = {
   number: number
 }
 
+// generate list of accessible days
 export const getDays = (curTime: Date): day[] => {
   let copyTime = new Date(curTime)
   const first = copyTime.getDate()
@@ -25,6 +26,7 @@ const CONSULT_DURATION_M = 50 // minutes
 const HOUR_M = 60 // minutes
 const DAY_H = 24 // hours
 
+// return date of next consultation
 export const nextConsultation = (date: Date): [Date, boolean] => {
   const prevH = date.getHours()
   const prevM = date.getMinutes()
@@ -37,6 +39,7 @@ export const nextConsultation = (date: Date): [Date, boolean] => {
   return [newDate, newH >= DAY_H]
 }
 
+// transform Date to 'hh:mm' format
 export const parseTime = (date: Date) => {
   let hours = date.getHours().toString()
   if (hours.length < 2) hours = '0' + hours
@@ -45,9 +48,11 @@ export const parseTime = (date: Date) => {
   return hours + ':' + minutes
 }
 
+// return month name of reported date
 export const getMonthName = (time: Date, lang = 'ru') => new Intl
   .DateTimeFormat(lang, { month: 'short' }).format(time)
 
+// generate list of accessible hours
 export const getHours = (curTime: Date, selectedTime: Date) => {
   const isToday = curTime.getDate() === selectedTime.getDate()
   let copyTime = new Date(curTime)

@@ -35,9 +35,11 @@ import { BottomButton } from './components/BottomButton'
 
 const App: React.FC = () => {
   const [curTime] = useState(new Date())
+  // it will change when user taps on some day or hour
   const [selectedTime, setSelectedTime] = useState(
     () => nextConsultation(curTime)[0],
   )
+  // it will change when user taps on SIGN UP FOR A FREE MEETING
   const fullySelectedTime = useSelector(getFullySelectedTime)
   const dispatch = useDispatch()
   const setTime = useCallback((newDate) =>

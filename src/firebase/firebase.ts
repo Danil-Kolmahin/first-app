@@ -17,7 +17,9 @@ const place = firebase
   .collection('times')
   .doc('HcvMM5Up4Uo8Th4wa9sU')
 
+// upload new date on server
 export const change = async (newTime: string) => await place.set({ cur: newTime })
 
+// take current date from server
 export const get = async () => ((await place.get()).data() ?? { cur: new Date() }).cur
 
