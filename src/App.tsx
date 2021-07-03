@@ -24,17 +24,19 @@ import './theme/variables.css';
 import React, {useState} from "react";
 import {UserHeader} from "./components/UserHeader";
 import {FreeDays} from "./components/FreeDays";
-import {FreeHours, nextCons, parseTime} from "./components/FreeHours";
+import {FreeHours} from "./components/FreeHours";
+import {useDispatch, useSelector} from "react-redux";
+import {changeFullySelectedTime} from "./redux/signReducer";
+import {getFullySelectedTime} from "./redux/signSelector";
+import {getMonthName, nextCons, parseTime} from "./common/functions";
+
 
 const App: React.FC = () => {
     const [curTime] = useState(new Date()) // new Date(0, 0, 0, 15, 50)
-    const [selectedTime, setSelectedTime] = useState(() => {
-        const date = new Date(curTime)
-        date.setHours(nextCons(curTime)[0].getHours())
-        date.setMinutes(nextCons(curTime)[0].getMinutes())
-        return date
-    })
-    const [fullySelectedTime, setFullySelectedTime] = useState(selectedTime)
+    const [selectedTime, setSelectedTime] = useState(() => nextCons(curTime)[0])
+    const fullySelectedTime = useSelector(getFullySelectedTime)
+    const dispatch = useDispatch()
+
     return <IonApp>
         <IonContent>
             <IonGrid>
@@ -48,11 +50,7 @@ const App: React.FC = () => {
                                 <IonCol>
                                     <div>Дата</div>
                                     <div style={{fontWeight: 700, color: 'black'}}>
-                                        {
-                                            fullySelectedTime.getDate() + ' ' +
-                                            new Intl.DateTimeFormat('ru', {month: 'short'})
-                                                .format(fullySelectedTime)
-                                        }
+                                        {fullySelectedTime.getDate() + ' ' + getMonthName(fullySelectedTime)}
                                     </div>
                                 </IonCol>
                                 <IonCol>
@@ -64,7 +62,9 @@ const App: React.FC = () => {
                             </IonRow>
                             <IonRow>
                                 <IonButton size="small" color="secondary"
-                                           onClick={() => setFullySelectedTime(selectedTime)}
+                                           onClick={() => dispatch(
+                                               changeFullySelectedTime(selectedTime.toString())
+                                           )}
                                 >
                                     ЗАПИСАТЬСЯ НА БЕСПЛАТНУЮ ВСТРЕЧУ
                                 </IonButton>
